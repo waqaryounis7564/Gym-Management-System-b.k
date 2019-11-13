@@ -1,7 +1,7 @@
-//ExreciseAssigned
-
 const mongoose = require("mongoose");
 const Joi = require("joi");
+
+const { exerciseSchema } = require("./exercise");
 
 function validateMember(body) {
   const schema = {
@@ -16,9 +16,7 @@ function validateMember(body) {
     gender: Joi.string().required(),
     age: Joi.number().required(),
     dateOfJoining: Joi.string().required,
-    biometric: Joi.string(),
-    remarks: Joi.string(),
-    exercisesAssigned: Joi.string()
+    biometric: Joi.string()
   };
   return Joi.validate(body, schema);
 }
@@ -31,9 +29,11 @@ const memberSchema = new mongoose.Schema({
   dateOfJoining: { type: String, required: true },
   biometric: { type: String },
   remarks: { type: String },
-  exercisesAssigned: { type: String }
+  exercisesAssigned: {
+    type: exerciseSchema
+  }
 });
 const Member = mongoose.model("member", memberSchema);
 
-exports.Customer = Member;
+exports.Member = Member;
 exports.validate = validateMember;

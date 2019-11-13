@@ -1,9 +1,3 @@
-// Type:
-// Name:
-// Quantity:
-// Description:
-// Condition:
-
 const mongoose = require("mongoose");
 const Joi = require("joi");
 

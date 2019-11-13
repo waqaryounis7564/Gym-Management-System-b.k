@@ -1,7 +1,3 @@
-// Type:
-// Name:
-// Description:
-
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
@@ -25,7 +21,8 @@ const exerciseSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 3, maxlength: 50 },
   description: { type: String, required: true }
 });
-const exercise = mongoose.model("exercise", exerciseSchema);
+const Exercise = mongoose.model("exercise", exerciseSchema);
 
-exports.exercise = exercise;
+exports.Exercise = Exercise;
+exports.exerciseSchema = exerciseSchema;
 exports.validate = validateExercise;

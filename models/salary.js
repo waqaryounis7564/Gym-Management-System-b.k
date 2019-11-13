@@ -3,13 +3,8 @@ const Joi = require("joi");
 
 function validateSalary(body) {
   const schema = {
-    triner: Joi.string()
-      .min(3)
-      .max(50)
-      .required(),
-    month: Joi.string()
-      .required()
-      .max(13),
+    trainer_id: Joi.string().required(),
+    month: Joi.string().required(),
     salaryAmount: Joi.number().required(),
     paid: Joi.boolean(),
     salaryDue: Joi.number(),
@@ -18,7 +13,12 @@ function validateSalary(body) {
   return Joi.validate(body, schema);
 }
 const salarySchema = new mongoose.Schema({
-  trainer: { type: String, required: true, minlength: 3, maxlength: 50 },
+  trainer: {
+    type: new mongoose.Schema({
+      name: { type: String, minlength: 3, maxlength: 50, required: true }
+    }),
+    required: true
+  },
   month: { type: Date, required: true },
   salaryAmount: { type: Number, required: true },
   paid: { type: Boolean },

@@ -3,22 +3,22 @@ const Joi = require("joi");
 
 function validateFee(body) {
   const schema = {
-    member: Joi.string()
-      .min(3)
-      .max(50)
-      .required(),
-    month: Joi.string()
-      .required()
-      .max(13),
+    member_id: Joi.string().required(),
+    month: Joi.string().required(),
     feeAmount: Joi.number().required(),
-    paid: Joi.boolean(),
-    feeDue: Joi.number(),
+    paid: Joi.boolean().required,
+    feeDue: Joi.number().required,
     advancedFee: Joi.number()
   };
   return Joi.validate(body, schema);
 }
 const feeSchema = new mongoose.Schema({
-  member: { type: String, required: true, minlength: 3, maxlength: 50 },
+  member: {
+    type: new mongoose.Schema({
+      name: { type: String, minlength: 3, maxlength: 50, required: true }
+    })
+  },
+
   month: { type: Date, required: true },
   feeAmount: { type: Number, required: true },
   paid: { type: Boolean },

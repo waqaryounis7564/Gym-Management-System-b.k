@@ -1,11 +1,3 @@
-// User:
-// Month:
-// Height:
-// Weight:
-// Waist:
-// Bicep:
-// Triceps:
-// Shoulders:
 const mongoose = require("mongoose");
 const joi = require("joi");
 
@@ -38,7 +30,7 @@ const physicalSchema = new mongoose.Schema({
   Shoulders: { type: Number }
 });
 
-const Rental = mongoose.model("rental", rentalSchema);
+const Physical = mongoose.model("physicalRecord", physicalSchema);
 
-module.exports.Rental = Rental;
+module.exports.Physical = Physical;
 module.exports.validate = validate;
