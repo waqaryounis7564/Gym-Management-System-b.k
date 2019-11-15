@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const joi = require("joi");
-const jwt = require("jsonwebtoken");
+//const jwt = require("jsonwebtoken");
 
 function validate(body) {
   const schema = {
@@ -55,14 +55,14 @@ const adminSchema = new mongoose.Schema({
   },
   isAdmin: { type: Boolean, default: true }
 });
-adminSchema.methods.Authentication = function() {
-  //here we are defining payload of jwt
-  const token = jwt.sign(
-    { _id: this._id, admin: this.isAdmin },
-    process.env.privateKey
-  );
-  return token;
-};
+// adminSchema.methods.Authentication = function() {
+//   //here we are defining payload of jwt
+//   const token = jwt.sign(
+//     { _id: this._id, admin: this.isAdmin },
+//     process.env.privateKey
+//   );
+//   return token;
+// };
 const Admin = mongoose.model("admin", adminSchema);
 
 exports.validate = validate;
