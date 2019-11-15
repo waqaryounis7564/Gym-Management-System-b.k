@@ -3,11 +3,13 @@ const Joi = require("joi");
 
 function validateFee(body) {
   const schema = {
-    member_id: Joi.string().required(),
+    member_id: Joi.string()
+      .required()
+      .regex(/^[0-9a-fA-F]{24}$/),
     month: Joi.string().required(),
     feeAmount: Joi.number().required(),
-    paid: Joi.boolean().required,
-    feeDue: Joi.number().required,
+    paid: Joi.boolean().required(),
+    feeDue: Joi.number(),
     advancedFee: Joi.number()
   };
   return Joi.validate(body, schema);
@@ -19,11 +21,11 @@ const feeSchema = new mongoose.Schema({
     })
   },
 
-  month: { type: Date, required: true },
+  month: { type: String, required: true },
   feeAmount: { type: Number, required: true },
-  paid: { type: Boolean },
-  feeDue: { type: Number },
-  advancedFee: { type: Number }
+  paid: { type: Boolean, default: false },
+  feeDue: { type: Number, default: 0 },
+  advancedFee: { type: Number, default: 0 }
 });
 const Fee = mongoose.model("fee", feeSchema);
 

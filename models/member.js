@@ -10,13 +10,16 @@ function validateMember(body) {
       .max(50)
       .required(),
     mobile: Joi.string()
-      .required()
-      .max(13),
-    cnic: Joi.string().required(),
+      .max(13)
+      .required(),
     gender: Joi.string().required(),
     age: Joi.number().required(),
-    dateOfJoining: Joi.string().required,
-    biometric: Joi.string()
+    cnic: Joi.string().required(),
+    dateOfJoining: Joi.string().required(),
+    biometric: Joi.string(),
+    exercise_id: Joi.string()
+      .required()
+      .regex(/^[0-9a-fA-F]{24}$/)
   };
   return Joi.validate(body, schema);
 }
@@ -29,9 +32,7 @@ const memberSchema = new mongoose.Schema({
   dateOfJoining: { type: String, required: true },
   biometric: { type: String },
   remarks: { type: String },
-  exercisesAssigned: {
-    type: exerciseSchema
-  }
+  exercisesAssigned: { type: exerciseSchema, default: null }
 });
 const Member = mongoose.model("member", memberSchema);
 

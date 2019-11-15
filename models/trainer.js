@@ -16,7 +16,9 @@ function validateTrainer(body) {
     dateOfJoining: Joi.string().required(),
     biometric: Joi.string(),
     remarks: Joi.string(),
-    assignedMember_id: Joi.string().required()
+    assignedMember_id: Joi.string()
+      .required()
+      .regex(/^[0-9a-fA-F]{24}$/)
   };
   return Joi.validate(body, schema);
 }
