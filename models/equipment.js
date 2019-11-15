@@ -17,7 +17,6 @@ const equipmentSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 3, maxlength: 50 },
   quantity: { type: Number, required: true },
   equipmentAvailability: { type: Boolean, required: true },
-  paid: { type: Boolean },
   description: { type: String }
 });
 const Equipment = mongoose.model("equipment", equipmentSchema);
