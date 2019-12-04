@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
   if (error) return res.send(error.details[0].message).status(400);
   try {
     const registeredAdmin = await Admin.findOne({ email: req.body.email });
-    if (registeredAdmin) return res.send("admin already exist");
+    if (registeredAdmin) return res.status(400).send("admin already exist");
 
     const saltRound = 10;
     const salt = await bcrypt.genSalt(saltRound);
