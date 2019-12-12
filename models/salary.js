@@ -6,9 +6,9 @@ function validateSalary(body) {
     trainer_id: Joi.string()
       .required()
       .regex(/^[0-9a-fA-F]{24}$/),
-    month: Joi.string().required(),
+    salaryMonth: Joi.string().required(),
     salaryAmount: Joi.number().required(),
-    paid: Joi.boolean(),
+    salaryStatus: Joi.string(),
     salaryDue: Joi.number(),
     advancedSalary: Joi.number()
   };
@@ -20,9 +20,9 @@ const salarySchema = new mongoose.Schema({
       name: { type: String, minlength: 3, maxlength: 50, required: true }
     })
   },
-  month: { type: String, required: true },
+  salaryMonth: { type: String, required: true },
   salaryAmount: { type: Number, required: true },
-  paid: { type: Boolean, default: false },
+  salaryStatus: { type: String, required: true },
   salaryDue: { type: Number, default: 0 },
   advancedSalary: { type: Number, default: 0 }
 });

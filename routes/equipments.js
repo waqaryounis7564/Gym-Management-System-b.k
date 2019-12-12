@@ -5,8 +5,8 @@ const { Equipment, validate } = require("../models/equipment");
 
 router.get("/", async (req, res) => {
   try {
-    let equipment = await Equipment.find();
-    res.send(equipment);
+    let equipments = await Equipment.find();
+    res.send(equipments);
   } catch (error) {
     console.log(error);
   }
@@ -14,7 +14,8 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     const equipment = await Equipment.findById({ _id: req.params.id });
-    if (!equipment) return res.status(400).send("invalid id");
+    if (!equipment)
+      return res.status(404).send("equipment with this id not found");
     res.send(equipment);
   }
   res.send("invalid id");
@@ -40,8 +41,8 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    // const { error } = validate(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
     try {
       const equipment = await Equipment.findByIdAndUpdate(
         { _id: req.params.id },
@@ -67,7 +68,7 @@ router.delete("/:id", async (req, res) => {
       const equipment = await Equipment.findByIdAndDelete({
         _id: req.params.id
       });
-      if (!equipment) return res.status(400).send("equipment not available");
+      if (!equipment) return res.status(404).send("equipment not available");
       res.send(equipment);
     } catch (error) {
       console.log(error);

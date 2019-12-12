@@ -7,6 +7,10 @@ function validate(body) {
       .string()
       .required()
       .regex(/^[0-9a-fA-F]{24}$/),
+    exercise_id: joi
+      .string()
+      .required()
+      .regex(/^[0-9a-fA-F]{24}$/),
     month: joi.string().required(),
     height: joi.number().required(),
     weight: joi.number().required(),
@@ -25,15 +29,20 @@ const physicalSchema = new mongoose.Schema({
       name: { type: String, minlength: 3, maxlength: 50, required: true }
     })
   },
-  Month: { type: String, required: true },
-  Height: { type: Number, required: true },
-  Weight: { type: Number, required: true },
-  Waist: { type: Number, required: true },
-  Bicep: { type: Number, required: true },
-  Triceps: { type: Number, required: true },
-  Shoulders: { type: Number, required: true },
-  Thigh: { type: Number, required: true },
-  Chest: { type: Number, required: true }
+  exercise: {
+    type: new mongoose.Schema({
+      name: { type: String, minlength: 3, maxlength: 50, required: true }
+    })
+  },
+  month: { type: String, required: true },
+  weight: { type: Number, required: true },
+  height: { type: Number, required: true },
+  waist: { type: Number, required: true },
+  bicep: { type: Number, required: true },
+  triceps: { type: Number, required: true },
+  shoulders: { type: Number, required: true },
+  thigh: { type: Number, required: true },
+  chest: { type: Number, required: true }
 });
 
 const Physical = mongoose.model("physicalRecord", physicalSchema);

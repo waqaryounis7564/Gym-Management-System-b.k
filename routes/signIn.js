@@ -18,13 +18,14 @@ router.post("/", async (req, res) => {
     );
     if (!validUser) return res.status(400).send("invalid user or password");
     const token = registered_user.Authentication();
-    console.log(token);
 
     res
       .header("x-auth-token", token)
       .header("access-control-expose-headers", "x-auth-token")
       .send(registered_user);
-  } catch (error) {}
+  } catch (ex) {
+    console.error(ex);
+  }
 });
 
 function validate(body) {

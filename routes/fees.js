@@ -26,13 +26,13 @@ router.post("/", async (req, res) => {
 
   try {
     const member = await Member.findById(req.body.member_id);
-    if (!member) return res.status(400).send("member not found");
+    if (!member) return res.status(404).send("member not found");
 
     let fee = await new Fee({
       member: { name: member.name },
-      month: req.body.month,
+      feeMonth: req.body.feeMonth,
       feeAmount: req.body.feeAmount,
-      paid: req.body.paid,
+      feeStatus: req.body.feeStatus,
       feeDue: req.body.feeDue,
       advancedFee: req.body.advancedFee
     });
@@ -44,26 +44,26 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    // const { error } = validate(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
-    try {
-      const fee = await Fee.findByIdAndUpdate(
-        { _id: req.params.id },
-        {
-          month: req.body.month,
-          feeAmount: req.body.feeAmount,
-          paid: req.body.paid,
-          feeDue: req.body.feeDue,
-          advancedFee: req.body.advancedFee
-        },
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    const member = await Member.findById(req.body.member_id);
+    const fee = await Fee.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        member: { name: member.name },
+        feeMonth: req.body.feeMonth,
+        feeAmount: req.body.feeAmount,
+        paid: req.body.paid,
+        feeDue: req.body.feeDue,
+        advancedFee: req.body.advancedFee
+      },
 
-        { new: true }
-      );
-      res.send(fee);
-    } catch (error) {
-      console.log(error);
-    }
+      { new: true }
+    );
+    res.send(fee);
+  } catch (error) {
+    console.log(error);
   }
   res.send("invalid id");
 });

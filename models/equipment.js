@@ -8,7 +8,7 @@ function validateEquipment(body) {
       .max(50)
       .required(),
     quantity: Joi.number().required(),
-    equipmentAvailability: Joi.boolean().required(),
+    equipmentAvailability: Joi.string().required(),
     description: Joi.string()
   };
   return Joi.validate(body, schema);
@@ -16,8 +16,8 @@ function validateEquipment(body) {
 const equipmentSchema = new mongoose.Schema({
   name: { type: String, required: true, minlength: 3, maxlength: 50 },
   quantity: { type: Number, required: true },
-  equipmentAvailability: { type: Boolean, required: true },
-  description: { type: String }
+  equipmentAvailability: { type: String, required: true },
+  description: { type: String, required: true }
 });
 const Equipment = mongoose.model("equipment", equipmentSchema);
 

@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 
-const { exerciseSchema } = require("./exercise");
-
 function validateMember(body) {
   const schema = {
     name: Joi.string()
@@ -16,10 +14,7 @@ function validateMember(body) {
     age: Joi.number().required(),
     cnic: Joi.string().required(),
     dateOfJoining: Joi.string().required(),
-    biometric: Joi.string(),
-    exercise_id: Joi.string()
-      .required()
-      .regex(/^[0-9a-fA-F]{24}$/)
+    biometric: Joi.string()
   };
   return Joi.validate(body, schema);
 }
@@ -31,8 +26,7 @@ const memberSchema = new mongoose.Schema({
   cnic: { type: String, required: true },
   dateOfJoining: { type: String, required: true },
   biometric: { type: String },
-  remarks: { type: String },
-  exercisesAssigned: { type: exerciseSchema, default: null }
+  remarks: { type: String }
 });
 const Member = mongoose.model("member", memberSchema);
 

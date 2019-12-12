@@ -26,15 +26,15 @@ router.post("/", async (req, res) => {
 
   try {
     const trainer = await Trainer.findById(req.body.trainer_id);
-    if (!trainer) return res.status(400).send("trainer not found");
+    if (!trainer) return res.status(404).send("trainer not found");
 
     let salary = await new Salary({
       trainer: { name: trainer.name },
-      month: req.body.month,
+      salaryMonth: req.body.salaryMonth,
       salaryAmount: req.body.salaryAmount,
-      paid: req.body.paid,
+      salaryStatus: req.body.salaryStatus,
       salaryDue: req.body.salaryDue,
-      advancedSalary: req.body.advancedsalary
+      advancedSalary: req.body.advancedSalary
     });
     await salary.save();
     res.send(salary);
@@ -51,9 +51,9 @@ router.put("/:id", async (req, res) => {
       const salary = await Salary.findByIdAndUpdate(
         { _id: req.params.id },
         {
-          month: req.body.month,
+          salaryMonth: req.body.salaryMonth,
           salaryAmount: req.body.salaryAmount,
-          paid: req.body.paid,
+          salaryStatus: req.body.salaryStatus,
           salaryDue: req.body.salaryDue,
           advancedSalary: req.body.advancedSalary
         },

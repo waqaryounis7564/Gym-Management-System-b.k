@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { Member, validate } = require("../models/member");
-const { Exercise } = require("../models/exercise");
 
 router.get("/", async (req, res) => {
   try {
@@ -25,9 +24,6 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    const exercise = await Exercise.findById(req.body.exercise_id);
-    if (!exercise) return res.status(400).send("exercise not found");
-
     let member = await new Member({
       name: req.body.name,
       mobile: req.body.mobile,
@@ -36,13 +32,7 @@ router.post("/", async (req, res) => {
       age: req.body.age,
       biometric: req.body.biometric,
       dateOfJoining: req.body.dateOfJoining,
-      remarks: req.body.remarks,
-      exercisesAssigned: {
-        _id: exercise._id,
-        exerciseType: exercise.exerciseType,
-        name: exercise.name,
-        description: exercise.description
-      }
+      remarks: req.body.remarks
     });
     await member.save();
     res.send(member);

@@ -6,9 +6,9 @@ function validateFee(body) {
     member_id: Joi.string()
       .required()
       .regex(/^[0-9a-fA-F]{24}$/),
-    month: Joi.string().required(),
+    feeMonth: Joi.string().required(),
     feeAmount: Joi.number().required(),
-    paid: Joi.boolean().required(),
+    feeStatus: Joi.string().required(),
     feeDue: Joi.number(),
     advancedFee: Joi.number()
   };
@@ -21,9 +21,9 @@ const feeSchema = new mongoose.Schema({
     })
   },
 
-  month: { type: String, required: true },
+  feeMonth: { type: String, required: true },
   feeAmount: { type: Number, required: true },
-  paid: { type: Boolean, default: false },
+  feeStatus: { type: String, required: true },
   feeDue: { type: Number, default: 0 },
   advancedFee: { type: Number, default: 0 }
 });
