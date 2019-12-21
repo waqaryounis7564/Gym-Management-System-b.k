@@ -25,38 +25,48 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    const member = await Member.findById(req.body.member_id);
-    if (!member) return res.status(404).send("member not found");
+    const user = await Member.findById(req.body.member_id);
+    if (!user) return res.status(400).send("member is not available");
 
-    let fee = await new Fee({
-      member: { name: member.name },
+    const registeredMember = await Fee.findOne({ userId: req.body.member_id });
+    if (registeredMember) return res.status(409).send("Member already exist");
+
+    let fee = new Fee({
+      userId: user._id,
+      member: {
+        name: user.name,
+        monthlyFee: user.monthlyFee
+      },
       feeMonth: req.body.feeMonth,
-      feeAmount: req.body.feeAmount,
+      amountPaid: req.body.amountPaid,
       feeStatus: req.body.feeStatus,
-      feeDue: req.body.feeDue,
-      advancedFee: req.body.advancedFee
+      feeDue: user.monthlyFee - req.body.amountPaid,
+      advancedFee: req.body.advancedFee,
+      totalAmount: user.monthlyFee - req.body.amountPaid - req.body.advancedFee
     });
     await fee.save();
     res.send(fee);
   } catch (error) {
-    console.log(error.message);
+    res.status(400).send(error.message);
   }
 });
 
 router.put("/:id", async (req, res) => {
-  const { error } = validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
+  // const { error } = validate(req.body);
+  // if (error) return res.status(400).send(error.details[0].message);
   try {
-    const member = await Member.findById(req.body.member_id);
+    const user = await Fee.findById(req.params.id);
+    console.log(user);
     const fee = await Fee.findByIdAndUpdate(
       { _id: req.params.id },
       {
-        member: { name: member.name },
         feeMonth: req.body.feeMonth,
-        feeAmount: req.body.feeAmount,
-        paid: req.body.paid,
-        feeDue: req.body.feeDue,
-        advancedFee: req.body.advancedFee
+        amountPaid: req.body.amountPaid,
+        feeStatus: req.body.feeStatus,
+        feeDue: user.member.monthlyFee - req.body.amountPaid,
+        advancedFee: req.body.advancedFee,
+        totalAmount:
+          user.member.monthlyFee - req.body.amountPaid - req.body.advancedFee
       },
 
       { new: true }
@@ -65,7 +75,7 @@ router.put("/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-  res.send("invalid id");
+  //res.send("invalid id");
 });
 router.delete("/:id", async (req, res) => {
   if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {

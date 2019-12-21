@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
       cnic: req.body.cnic,
       gender: req.body.gender,
       age: req.body.age,
-      biometric: req.body.biometric,
+      monthlyFee: req.body.monthlyFee,
       dateOfJoining: req.body.dateOfJoining,
       remarks: req.body.remarks
     });
@@ -54,7 +54,7 @@ router.put("/:id", async (req, res) => {
           cnic: req.body.cnic,
           gender: req.body.gender,
           age: req.body.age,
-          biometric: req.body.biometric,
+          monthlyFee: req.body.monthlyFee,
           dateOfJoining: req.body.dateOfJoining
         },
 

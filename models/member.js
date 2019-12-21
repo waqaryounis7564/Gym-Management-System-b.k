@@ -14,7 +14,7 @@ function validateMember(body) {
     age: Joi.number().required(),
     cnic: Joi.string().required(),
     dateOfJoining: Joi.string().required(),
-    biometric: Joi.string()
+    monthlyFee: Joi.number()
   };
   return Joi.validate(body, schema);
 }
@@ -25,7 +25,7 @@ const memberSchema = new mongoose.Schema({
   age: { type: Number, required: true },
   cnic: { type: String, required: true },
   dateOfJoining: { type: String, required: true },
-  biometric: { type: String },
+  monthlyFee: { type: Number },
   remarks: { type: String }
 });
 const Member = mongoose.model("member", memberSchema);
