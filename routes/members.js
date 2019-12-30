@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    let member = await new Member({
+    let member = new Member({
       name: req.body.name,
       mobile: req.body.mobile,
       cnic: req.body.cnic,

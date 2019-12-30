@@ -15,6 +15,21 @@ function validateFee(body) {
   };
   return Joi.validate(body, schema);
 }
+
+function validateModifyFee(body) {
+  const schema = {
+    member_id: Joi.string(),
+    feeMonth: Joi.string().required(),
+    amountPaid: Joi.number().required(),
+    feeStatus: Joi.string().required(),
+    advancedFee: Joi.number().required(),
+    feeDue: Joi.number().required(),
+    monthlyFee: Joi.number().required(),
+    totalAmount: Joi.number().required()
+  };
+  return Joi.validate(body, schema);
+}
+
 const feeSchema = new mongoose.Schema({
   userId: { type: String, unique: true },
   member: {
@@ -40,3 +55,4 @@ const Fee = mongoose.model("fee", feeSchema);
 
 exports.Fee = Fee;
 exports.validate = validateFee;
+exports.Modify = validateModifyFee;

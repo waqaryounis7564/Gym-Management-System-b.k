@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Member } = require("../models/member");
-const { Fee, validate } = require("../models/fee");
+const { Fee, validate, Modify } = require("../models/fee");
 
 router.get("/", async (req, res) => {
   try {
@@ -52,8 +52,8 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  // const { error } = validate(req.body);
-  // if (error) return res.status(400).send(error.details[0].message);
+  const { error } = Modify(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
   try {
     const user = await Fee.findById(req.params.id);
     console.log(user);

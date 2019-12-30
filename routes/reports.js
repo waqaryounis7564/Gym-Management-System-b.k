@@ -48,8 +48,9 @@ router.get("/", async (req, res) => {
       reportTime: time,
       credit: feeAmount(fees),
       debit: salaryAmount(salaries),
-      totalAmount: feeAmount(fees) - salaryAmount(salaries)
+      totalAmount: feeAmount(fees) + salaryAmount(salaries)
     });
+
     await report.save();
     res.send(report);
   } catch (error) {

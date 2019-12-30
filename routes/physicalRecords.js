@@ -32,10 +32,24 @@ router.post("/", async (req, res) => {
     const member = await Member.findById(req.body.member_id);
     if (!member) return res.status(404).send("member not found");
 
-    const exercise = await Exercise.findById(req.body.exercise_id);
-    if (!exercise) return res.status(404).send("exercise not found");
-    let physical = await new Physical({
-      exercise: { name: exercise.name },
+    let assignExercises = [];
+
+    for (let i = 0; i < req.body.exercise_id.length; i++) {
+      const exercise = await Exercise.findById(req.body.exercise_id[i]);
+      if (!exercise) return res.status(400).send("Exercise is not available");
+
+      assignExercises.push(exercise);
+    }
+
+    const registerRecord = await Physical.findOne({
+      userId: req.body.member_id
+    });
+    if (registerRecord)
+      return res.status(409).send("record has already registered");
+
+    let physical = new Physical({
+      userId: req.body.member_id,
+      exercises: assignExercises,
       member: { name: member.name },
       month: req.body.month,
       height: req.body.height,
@@ -58,16 +72,19 @@ router.put("/:id", async (req, res) => {
   let { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   try {
-    const member = await Member.findById(req.body.member_id);
-    if (!member) return res.status(404).send("member not found");
+    let assignExercises = [];
 
-    const exercise = await Exercise.findById(req.body.exercise_id);
-    if (!exercise) return res.status(404).send("exercise not found");
+    for (let i = 0; i < req.body.exercise_id.length; i++) {
+      const exercise = await Exercise.findById(req.body.exercise_id[i]);
+      if (!exercise) return res.status(400).send("Exercise is not available");
+
+      assignExercises.push(exercise);
+    }
+
     const physical = await Physical.findByIdAndUpdate(
       { _id: req.params.id },
       {
-        exercise: { name: exercise.name },
-        member: { name: member.name },
+        exercises: assignExercises,
         month: req.body.month,
         height: req.body.height,
         weight: req.body.weight,
@@ -92,7 +109,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
     try {
-      const physical = await physical.findByIdAndDelete({ _id: req.params.id });
+      const physical = await Physical.findByIdAndDelete({ _id: req.params.id });
       if (!physical) return res.status(400).send("physical not available");
       res.send(physical);
     } catch (error) {

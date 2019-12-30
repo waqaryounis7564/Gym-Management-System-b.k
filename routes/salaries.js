@@ -28,7 +28,13 @@ router.post("/", async (req, res) => {
     const trainer = await Trainer.findById(req.body.trainer_id);
     if (!trainer) return res.status(404).send("trainer not found");
 
-    let salary = await new Salary({
+    const registeredTrainer = await Salary.findOne({
+      userId: req.body.trainer_id
+    });
+    if (registeredTrainer) return res.status(409).send("Member already exist");
+
+    let salary = new Salary({
+      userId: trainer._id,
       trainer: { name: trainer.name },
       salaryMonth: req.body.salaryMonth,
       salaryAmount: req.body.salaryAmount,
@@ -45,8 +51,8 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    // const { error } = validate(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
     try {
       const salary = await Salary.findByIdAndUpdate(
         { _id: req.params.id },

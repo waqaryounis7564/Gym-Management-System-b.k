@@ -12,8 +12,8 @@ function validateExercise(body) {
       .min(3)
       .max(50),
     description: Joi.string()
-      .required()
       .max(1000)
+      .required()
   };
   return Joi.validate(body, schema);
 }

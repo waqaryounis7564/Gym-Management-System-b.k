@@ -10,6 +10,7 @@ const report = require("../routes/reports");
 const salary = require("../routes/salaries");
 const trainer = require("../routes/trainers");
 const physicalRecord = require("../routes/physicalRecords");
+const registerService = require("../routes/registerServices");
 
 module.exports = function(app) {
   app.use(bodyParser.json());
@@ -24,4 +25,5 @@ module.exports = function(app) {
   app.use("/report", report);
   app.use("/salary", salary);
   app.use("/trainer", trainer);
+  app.use("/registerService", registerService);
 };

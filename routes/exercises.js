@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    let exercise = await new Exercise({
+    let exercise = new Exercise({
       exerciseType: req.body.exerciseType,
       name: req.body.name,
       description: req.body.description

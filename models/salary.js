@@ -15,6 +15,7 @@ function validateSalary(body) {
   return Joi.validate(body, schema);
 }
 const salarySchema = new mongoose.Schema({
+  userId: { type: String, unique: true },
   trainer: {
     type: new mongoose.Schema({
       name: { type: String, minlength: 3, maxlength: 50, required: true }

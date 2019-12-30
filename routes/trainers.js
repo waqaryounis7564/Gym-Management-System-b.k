@@ -25,19 +25,14 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    const member = await Member.findById(req.body.assignedMember_id);
-    if (!member) return res.status(400).send("member not found");
-
-    let trainer = await new Trainer({
+    let trainer = new Trainer({
       name: req.body.name,
       mobile: req.body.mobile,
       gender: req.body.gender,
       cnic: req.body.cnic,
       age: req.body.age,
-      biometric: req.body.biometric,
-      remarks: req.body.remarks,
-      dateOfJoining: req.body.dateOfJoining,
-      memberAssigned: { name: member.name }
+
+      dateOfJoining: req.body.dateOfJoining
     });
     await trainer.save();
     res.send(trainer);
@@ -47,30 +42,30 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-    // const { error } = validate(req.body);
-    // if (error) return res.status(400).send(error.details[0].message);
-    try {
-      const trainer = await Trainer.findByIdAndUpdate(
-        { _id: req.params.id },
-        {
-          name: req.body.name,
-          mobile: req.body.mobile,
-          gender: req.body.gender,
-          cnic: req.body.cnic,
-          age: req.body.age,
-          biometric: req.body.biometric,
-          remarks: req.body.remarks,
-          dateOfJoining: req.body.dateOfJoining
-        },
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
-        { new: true }
-      );
-      res.send(trainer);
-    } catch (error) {
-      console.log(error);
-    }
+  try {
+    const trainer = await Trainer.findByIdAndUpdate(
+      { _id: req.params.id },
+
+      {
+        name: req.body.name,
+        mobile: req.body.mobile,
+        gender: req.body.gender,
+        cnic: req.body.cnic,
+        age: req.body.age,
+        dateOfJoining: req.body.dateOfJoining
+      },
+
+      { new: true }
+    );
+    await res.save(trainer);
+    res.send(trainer);
+  } catch (error) {
+    console.log(error);
   }
+
   res.send("invalid id");
 });
 router.delete("/:id", async (req, res) => {

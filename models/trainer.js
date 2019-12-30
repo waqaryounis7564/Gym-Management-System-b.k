@@ -13,12 +13,7 @@ function validateTrainer(body) {
     cnic: Joi.string().required(),
     gender: Joi.string().required(),
     age: Joi.number().required(),
-    dateOfJoining: Joi.string().required(),
-    biometric: Joi.string(),
-    remarks: Joi.string(),
-    assignedMember_id: Joi.string()
-      .required()
-      .regex(/^[0-9a-fA-F]{24}$/)
+    dateOfJoining: Joi.string().required()
   };
   return Joi.validate(body, schema);
 }
@@ -28,14 +23,7 @@ const trainerSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   cnic: { type: String, required: true },
   age: { type: Number, required: true },
-  dateOfJoining: { type: String, required: true },
-  biometric: { type: String },
-  remarks: { type: String },
-  memberAssigned: {
-    type: new mongoose.Schema({
-      name: { type: String, minlength: 3, maxlength: 50, required: true }
-    })
-  }
+  dateOfJoining: { type: String, required: true }
 });
 const Trainer = mongoose.model("trainer", trainerSchema);
 
